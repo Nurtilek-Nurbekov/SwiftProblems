@@ -1,0 +1,21 @@
+let N = 2000001
+
+var isPrime = [Bool](repeating: true, count: N)
+isPrime[0] = false
+isPrime[1] = false
+
+for i in stride(from: 4, to: N, by: 2) {
+   isPrime[i] = false
+}
+
+var sum = 2
+for p in 3 ..< N where isPrime[p] {
+  sum += p
+  guard Int64(p) * Int64(p) < N else {
+     continue
+  }
+  for i in stride(from: p * p, to: N, by: 2 * p) {
+     isPrime[i] = false
+  }
+}
+print (sum)

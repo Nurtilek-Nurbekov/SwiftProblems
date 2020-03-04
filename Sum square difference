@@ -1,0 +1,12 @@
+func sumSquareDifference(range: Int) -> Int {
+    var sumOfSquares = 0
+    var squareOfSum = 0
+    for number in 1..<range+1 { //Is there a better way? Other than range+1?
+        sumOfSquares += (number*number)
+        squareOfSum += number
+    }
+    squareOfSum = squareOfSum*squareOfSum
+    return (squareOfSum - sumOfSquares)
+}
+
+print(sumSquareDifference(range:100))

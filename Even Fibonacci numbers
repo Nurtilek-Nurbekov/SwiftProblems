@@ -1,0 +1,33 @@
+extension SequenceOf {
+    func takeWhile(p: (T) -> Bool) -> SequenceOf<T> {
+        return SequenceOf { _ -> GeneratorOf<T> in
+            var generator = self.generate()
+            return GeneratorOf {
+                if let next = generator.next() {
+                    return p(next) ? next : nil
+                }
+                return nil
+            }
+        }
+    }
+
+    // Reduce1 since name collision is not resolved
+    func reduce1<U>(initial: U, combine: (U, T) -> U) -> U {
+        return reduce(self, initial, combine)
+    }
+}
+
+
+func fibonacci() -> SequenceOf<Int> {
+    return SequenceOf { _ -> GeneratorOf<Int> in
+        var (a, b) = (1, 0)
+        return GeneratorOf {
+            (b, a) = (a, b + a)
+            return b
+        }
+    }
+}
+
+let sum2 = fibonacci()
+    .takeWhile({ $0 < 4_000_000 })
+    .reduce1(0) { a, n in (n % 2 == 0) ? a + n : a}

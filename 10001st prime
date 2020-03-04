@@ -1,0 +1,40 @@
+func nthPrime(var n : Int) -> Int {
+
+    assert(n > 0, "argument must be positive")
+
+    // The below estimate is only valid for n > 6:
+    if n <= 6 {
+        return [2, 3, 5, 7, 11, 13][n-1]
+    }
+
+    // Upper bound from http://en.wikipedia.org/wiki/Prime_number_theorem#Approximations_for_the_nth_prime_number:
+    let d = Double(n)
+    let upperBound = Int(d * (log(d) + log(log(d))))
+
+    var composite = [Bool](count: upperBound + 1, repeatedValue: false)
+    var x = 2
+    let maxPrime = Int(ceil(sqrt(Double(upperBound))))
+
+    while x <= maxPrime {
+        if !composite[x] {
+            if (--n == 0) {
+                return x
+            }
+            for var y = x*x; y <= upperBound; y += x {
+                composite[y] = true
+            }
+        }
+        x++
+    }
+    while x <= upperBound {
+        if !composite[x] {
+            if (--n == 0) {
+                return x
+            }
+        }
+        x++
+    }
+
+    assertionFailure("Fatal error")
+    return -1
+}

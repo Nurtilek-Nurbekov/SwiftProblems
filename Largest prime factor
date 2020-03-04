@@ -1,0 +1,25 @@
+import Darwin
+
+extension Int {
+    func isMultipleOf(factor: Int) -> Bool {
+        return self % factor  == 0
+    }
+    func largestPossibleFactor() -> Int {
+        let squareRoot: Double = sqrt(Double(self))
+        return Int(ceil(squareRoot))
+    }
+}
+
+func findLargestPrimeFactor(let fromNumber: Int) -> Int {
+    for factor in 2..<fromNumber.largestPossibleFactor() {
+        if fromNumber.isMultipleOf(factor) {
+            return findLargestPrimeFactor(fromNumber/factor)
+        }
+    }
+    return fromNumber
+}
+
+
+let target: Int = 600_851_475_143
+
+let answer: Int = findLargestPrimeFactor(target)

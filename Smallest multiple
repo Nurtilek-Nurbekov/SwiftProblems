@@ -1,0 +1,33 @@
+import Foundation
+
+func printTimeElapsedWhenRunningCode(title:String, operation:()->()) {
+    let startTime = CFAbsoluteTimeGetCurrent()
+    operation()
+    let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
+    println("Time elapsed for \(title): \(timeElapsed) s")
+}
+
+func greatestCommonDenominator(a: Int, b: Int) -> Int {
+    return b == 0 ? a : greatestCommonDenominator(b, a % b)
+}
+
+func leastCommonMultiple(a: Int, b: Int) -> Int {
+    return a * (b / greatestCommonDenominator(a, b))
+}
+
+func leastCommonMultiple(input: [Int]) -> Int {
+    var result: Int = input[0]
+    for value in input {
+        result = leastCommonMultiple(result, value)
+    }
+    return result
+}
+
+func solution5() {
+    let firstTwentyInts: [Int] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+    let answer: Int = leastCommonMultiple(firstTwentyInts)
+
+    println(String(answer))
+}
+
+printTimeElapsedWhenRunningCode("Least Common Multiple", solution5)
